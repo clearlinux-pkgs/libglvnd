@@ -4,7 +4,7 @@
 #
 Name     : libglvnd
 Version  : 1.6.0
-Release  : 2
+Release  : 3
 URL      : https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v1.6.0/libglvnd-v1.6.0.tar.gz
 Source0  : https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v1.6.0/libglvnd-v1.6.0.tar.gz
 Summary  : Vendor-neutral OpenGL dispatch library vendor interface
@@ -39,6 +39,7 @@ dev components for the libglvnd package.
 Summary: lib components for the libglvnd package.
 Group: Libraries
 Requires: libglvnd-license = %{version}-%{release}
+Requires: mesa-lib
 
 %description lib
 lib components for the libglvnd package.
@@ -67,7 +68,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1676330157
+export SOURCE_DATE_EPOCH=1676334256
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib

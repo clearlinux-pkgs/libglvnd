@@ -5,7 +5,7 @@
 #
 Name     : libglvnd
 Version  : 1.6.0
-Release  : 4
+Release  : 5
 URL      : https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v1.6.0/libglvnd-v1.6.0.tar.gz
 Source0  : https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v1.6.0/libglvnd-v1.6.0.tar.gz
 Summary  : Vendor-neutral OpenGL dispatch library vendor interface
@@ -67,7 +67,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683043234
+export SOURCE_DATE_EPOCH=1685637919
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -97,20 +97,6 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files dev
 %defattr(-,root,root,-)
-/V3/usr/lib64/libEGL.so
-/V3/usr/lib64/libGL.so
-/V3/usr/lib64/libGLESv1_CM.so
-/V3/usr/lib64/libGLESv2.so
-/V3/usr/lib64/libGLX.so
-/V3/usr/lib64/libGLdispatch.so
-/V3/usr/lib64/libOpenGL.so
-/V4/usr/lib64/libEGL.so
-/V4/usr/lib64/libGL.so
-/V4/usr/lib64/libGLESv1_CM.so
-/V4/usr/lib64/libGLESv2.so
-/V4/usr/lib64/libGLX.so
-/V4/usr/lib64/libGLdispatch.so
-/V4/usr/lib64/libOpenGL.so
 /usr/include/EGL/egl.h
 /usr/include/EGL/eglext.h
 /usr/include/EGL/eglplatform.h
@@ -152,33 +138,19 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/libEGL.so.1
 /V3/usr/lib64/libEGL.so.1.1.0
-/V3/usr/lib64/libGL.so.1
 /V3/usr/lib64/libGL.so.1.7.0
-/V3/usr/lib64/libGLESv1_CM.so.1
 /V3/usr/lib64/libGLESv1_CM.so.1.2.0
-/V3/usr/lib64/libGLESv2.so.2
 /V3/usr/lib64/libGLESv2.so.2.1.0
-/V3/usr/lib64/libGLX.so.0
 /V3/usr/lib64/libGLX.so.0.0.0
-/V3/usr/lib64/libGLdispatch.so.0
 /V3/usr/lib64/libGLdispatch.so.0.0.0
-/V3/usr/lib64/libOpenGL.so.0
 /V3/usr/lib64/libOpenGL.so.0.0.0
-/V4/usr/lib64/libEGL.so.1
 /V4/usr/lib64/libEGL.so.1.1.0
-/V4/usr/lib64/libGL.so.1
 /V4/usr/lib64/libGL.so.1.7.0
-/V4/usr/lib64/libGLESv1_CM.so.1
 /V4/usr/lib64/libGLESv1_CM.so.1.2.0
-/V4/usr/lib64/libGLESv2.so.2
 /V4/usr/lib64/libGLESv2.so.2.1.0
-/V4/usr/lib64/libGLX.so.0
 /V4/usr/lib64/libGLX.so.0.0.0
-/V4/usr/lib64/libGLdispatch.so.0
 /V4/usr/lib64/libGLdispatch.so.0.0.0
-/V4/usr/lib64/libOpenGL.so.0
 /V4/usr/lib64/libOpenGL.so.0.0.0
 /usr/lib64/libEGL.so.1
 /usr/lib64/libEGL.so.1.1.0

@@ -7,7 +7,7 @@
 #
 Name     : libglvnd
 Version  : 1.6.0
-Release  : 6
+Release  : 7
 URL      : https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v1.6.0/libglvnd-v1.6.0.tar.gz
 Source0  : https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v1.6.0/libglvnd-v1.6.0.tar.gz
 Summary  : Vendor-neutral OpenGL dispatch library vendor interface
@@ -16,11 +16,6 @@ License  : BSD-1-Clause MIT
 Requires: libglvnd-lib = %{version}-%{release}
 Requires: libglvnd-license = %{version}-%{release}
 BuildRequires : buildreq-meson
-BuildRequires : gcc-dev32
-BuildRequires : gcc-libgcc32
-BuildRequires : gcc-libstdc++32
-BuildRequires : glibc-dev32
-BuildRequires : glibc-libc32
 BuildRequires : libX11-dev32
 BuildRequires : pkgconfig(x11)
 # Suppress stripping binaries
@@ -42,16 +37,6 @@ Requires: libglvnd = %{version}-%{release}
 dev components for the libglvnd package.
 
 
-%package dev32
-Summary: dev32 components for the libglvnd package.
-Group: Default
-Requires: libglvnd-lib32 = %{version}-%{release}
-Requires: libglvnd-dev = %{version}-%{release}
-
-%description dev32
-dev32 components for the libglvnd package.
-
-
 %package lib
 Summary: lib components for the libglvnd package.
 Group: Libraries
@@ -60,15 +45,6 @@ Requires: mesa-lib
 
 %description lib
 lib components for the libglvnd package.
-
-
-%package lib32
-Summary: lib32 components for the libglvnd package.
-Group: Default
-Requires: libglvnd-license = %{version}-%{release}
-
-%description lib32
-lib32 components for the libglvnd package.
 
 
 %package license
@@ -83,9 +59,6 @@ license components for the libglvnd package.
 %setup -q -n libglvnd-v1.6.0
 cd %{_builddir}/libglvnd-v1.6.0
 pushd ..
-cp -a libglvnd-v1.6.0 build32
-popd
-pushd ..
 cp -a libglvnd-v1.6.0 buildavx2
 popd
 pushd ..
@@ -97,7 +70,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1705372516
+export SOURCE_DATE_EPOCH=1705416323
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -118,15 +91,6 @@ CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 -O3" CXXFLAGS="$CXXFLAGS 
 ninja -v -C builddiravx2
 CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -Wl,-z,x86-64-v4 -O3 -mprefer-vector-width=512" CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -Wl,-z,x86-64-v4 -mprefer-vector-width=512" LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddiravx512
 ninja -v -C builddiravx512
-pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
-ASFLAGS="${CLEAR_INTERMEDIATE_ASFLAGS}${CLEAR_INTERMEDIATE_ASFLAGS:+ }--32"
-CFLAGS="${CLEAR_INTERMEDIATE_CFLAGS}${CLEAR_INTERMEDIATE_CFLAGS:+ }-m32 -mstackrealign"
-CXXFLAGS="${CLEAR_INTERMEDIATE_CXXFLAGS}${CLEAR_INTERMEDIATE_CXXFLAGS:+ }-m32 -mstackrealign"
-LDFLAGS="${CLEAR_INTERMEDIATE_LDFLAGS}${CLEAR_INTERMEDIATE_LDFLAGS:+ }-m32 -mstackrealign"
-meson --libdir=lib32 --prefix=/usr --buildtype=plain  -Dasm=disabled builddir
-ninja -v -C builddir
-popd
 
 %install
 export GCC_IGNORE_WERROR=1
@@ -146,21 +110,6 @@ LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
 mkdir -p %{buildroot}/usr/share/package-licenses/libglvnd
 cp %{_builddir}/libglvnd-v%{version}/src/util/cJSON/LICENSE %{buildroot}/usr/share/package-licenses/libglvnd/033ffa4ac6cd5fd7303f673ed72bb22c981fa435 || :
 cp %{_builddir}/libglvnd-v%{version}/src/util/uthash/LICENSE %{buildroot}/usr/share/package-licenses/libglvnd/bb6a5c5c266d376fb74be28218fe8b073c4913f7 || :
-pushd ../build32/
-DESTDIR=%{buildroot} ninja -C builddir install
-if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
-then
-pushd %{buildroot}/usr/lib32/pkgconfig
-for i in *.pc ; do ln -s $i 32$i ; done
-popd
-fi
-if [ -d %{buildroot}/usr/share/pkgconfig ]
-then
-pushd %{buildroot}/usr/share/pkgconfig
-for i in *.pc ; do ln -s $i 32$i ; done
-popd
-fi
-popd
 DESTDIR=%{buildroot}-v3 ninja -C builddiravx2 install
 DESTDIR=%{buildroot}-v4 ninja -C builddiravx512 install
 DESTDIR=%{buildroot} ninja -C builddir install
@@ -211,30 +160,6 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/lib64/pkgconfig/libglvnd.pc
 /usr/lib64/pkgconfig/opengl.pc
 
-%files dev32
-%defattr(-,root,root,-)
-/usr/lib32/libEGL.so
-/usr/lib32/libGL.so
-/usr/lib32/libGLESv1_CM.so
-/usr/lib32/libGLESv2.so
-/usr/lib32/libGLX.so
-/usr/lib32/libGLdispatch.so
-/usr/lib32/libOpenGL.so
-/usr/lib32/pkgconfig/32egl.pc
-/usr/lib32/pkgconfig/32gl.pc
-/usr/lib32/pkgconfig/32glesv1_cm.pc
-/usr/lib32/pkgconfig/32glesv2.pc
-/usr/lib32/pkgconfig/32glx.pc
-/usr/lib32/pkgconfig/32libglvnd.pc
-/usr/lib32/pkgconfig/32opengl.pc
-/usr/lib32/pkgconfig/egl.pc
-/usr/lib32/pkgconfig/gl.pc
-/usr/lib32/pkgconfig/glesv1_cm.pc
-/usr/lib32/pkgconfig/glesv2.pc
-/usr/lib32/pkgconfig/glx.pc
-/usr/lib32/pkgconfig/libglvnd.pc
-/usr/lib32/pkgconfig/opengl.pc
-
 %files lib
 %defattr(-,root,root,-)
 /V3/usr/lib64/libEGL.so.1.1.0
@@ -265,23 +190,6 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/lib64/libGLdispatch.so.0.0.0
 /usr/lib64/libOpenGL.so.0
 /usr/lib64/libOpenGL.so.0.0.0
-
-%files lib32
-%defattr(-,root,root,-)
-/usr/lib32/libEGL.so.1
-/usr/lib32/libEGL.so.1.1.0
-/usr/lib32/libGL.so.1
-/usr/lib32/libGL.so.1.7.0
-/usr/lib32/libGLESv1_CM.so.1
-/usr/lib32/libGLESv1_CM.so.1.2.0
-/usr/lib32/libGLESv2.so.2
-/usr/lib32/libGLESv2.so.2.1.0
-/usr/lib32/libGLX.so.0
-/usr/lib32/libGLX.so.0.0.0
-/usr/lib32/libGLdispatch.so.0
-/usr/lib32/libGLdispatch.so.0.0.0
-/usr/lib32/libOpenGL.so.0
-/usr/lib32/libOpenGL.so.0.0.0
 
 %files license
 %defattr(0644,root,root,0755)
